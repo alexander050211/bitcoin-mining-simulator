@@ -8,6 +8,7 @@ sha256.update(input);
 std::string hash = sha256.final();
 ```
 ### The immediate way
+Doesn't need instance of SHA256 to get hash
 ```
 std::string quickHash = SHA256::hash(input);
 ```
