@@ -1,12 +1,17 @@
 #include <bits/stdc++.h>
-#define endl '\n'
-using namespace std;
-typedef long long ll;
+#include "SHA256.h"
+
 int main()
 {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
-  cout << "Hello World" << endl;
+  SHA256 sha256;
+  std::string input = "Hello, world!";
+  sha256.update(input);
+  std::string hash = sha256.final();
+
+  std::cout << "SHA256(\"" << input << "\") = " << hash << std::endl;
+
+  std::string quickHash = SHA256::hash("abc");
+  std::cout << "SHA256(\"abc\") = " << quickHash << std::endl;
+
   return 0;
 }
