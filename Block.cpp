@@ -4,8 +4,7 @@
 #include <sstream>
 #include <iomanip>
 
-Block::Block(const std::string &previousHash, const std::string &data)
-    : previousHash(previousHash), data(data), nonce(0), timestamp(std::time(nullptr))
+Block::Block(const std::string &previousHash, const std::string &data) : previousHash(previousHash), data(data), nonce(0), timestamp(std::time(nullptr))
 {
   hash = calculateHash();
 }
