@@ -3,31 +3,29 @@
 #define BLOCK_H
 
 #include <string>
-#include <ctime>
+#include <vector>
 #include <cstdint>
 
 class Block
 {
 public:
-  Block(const std::string &previousHash, const std::string &data);
-  std::string calculateHash() const;
+  Block(const std::vector<uint8_t> &previousHash, const std::vector<uint8_t> &data);
+  std::vector<uint8_t> calculateHash() const;
 
-  // Getters
-  std::string getPreviousHash() const;
-  std::string getHash() const;
+  std::vector<uint8_t> getPreviousHash() const;
+  std::vector<uint8_t> getHash() const;
   uint32_t getNonce() const;
   time_t getTimestamp() const;
 
-  // Proof-of-work setters
-  void setNonce(uint32_t nonce);
-  void setHash(const std::string &hash);
+  void setNonce(uint32_t newNonce);
+  void setHash(const std::vector<uint8_t> &newHash);
 
 private:
-  std::string previousHash;
-  std::string data;
+  std::vector<uint8_t> previousHash;
+  std::vector<uint8_t> data;
+  std::vector<uint8_t> hash;
   uint32_t nonce;
   time_t timestamp;
-  std::string hash;
 };
 
 #endif // BLOCK_H

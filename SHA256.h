@@ -1,34 +1,27 @@
-// SHA256.h
 #ifndef SHA256_H
 #define SHA256_H
 
 #include <string>
+#include <vector>
 #include <cstdint>
 
 class SHA256
 {
 public:
-  // Constructor to initialize internal state
-  SHA256();
-
-  // Public methods for hashing
-  void update(const uint8_t *data, size_t length); // Add data to the hash
-  void update(const std::string &data);            // Add data to the hash from a string
-  std::string final();                             // Get the final hash as a string
-  void reset();                                    // Reset state to start hashing new data
-
-  // Static convenience method for quick hashing
-  static std::string hash(const std::string &data);
+  void init();
+  void update(const uint8_t *message, uint32_t length);
+  void final(uint8_t *digest);
 
 private:
-  // Internal transformation method to process 512-bit chunks
-  void transform();
+  void transform(const uint8_t *message, uint32_t block_num);
 
-  // Internal data members for SHA-256 state and data block
   uint8_t m_data[64];  // Current data block (64 bytes)
   uint32_t m_blocklen; // Length of current data block
   uint64_t m_bitlen;   // Total length of the message (in bits)
   uint32_t m_state[8]; // Internal state (hash values)
+
+  // Constants used in SHA-256
+  static const uint32_t K[64];
 
   // Static utility methods for bitwise operations used in SHA-256
   static uint32_t rotr(uint32_t x, uint32_t n);
@@ -38,9 +31,8 @@ private:
   static uint32_t sig1(uint32_t x);
   static uint32_t ep0(uint32_t x);
   static uint32_t ep1(uint32_t x);
-
-  // Constants used in SHA-256
-  static const uint32_t K[64];
 };
+
+std::string sha256(std::string input);
 
 #endif // SHA256_H

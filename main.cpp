@@ -3,15 +3,8 @@
 
 int main()
 {
-  SHA256 sha256;
-  std::string input = "Hello, world!";
-  sha256.update(input);
-  std::string hash = sha256.final();
-
-  std::cout << "SHA256(\"" << input << "\") = " << hash << std::endl;
-
-  std::string quickHash = SHA256::hash("abc");
-  std::cout << "SHA256(\"abc\") = " << quickHash << std::endl;
-
+  std::string input = "202124";
+  std::string output1 = sha256(input);
+  std::cout << "sha256('" << input << "'):" << output1 << std::endl;
   return 0;
 }
