@@ -1,14 +1,8 @@
 ## How to use SHA256
-
-### The safe way
+You don't have to create an instance of the SHA256 class to use it. Just call the static function ```std::string sha256(std::string input);```
+### Example code
 ```
-SHA256 sha256;
-std::string input;
-sha256.update(input);
-std::string hash = sha256.final();
-```
-### The immediate way
-Doesn't need instance of SHA256 to get hash
-```
-std::string quickHash = SHA256::hash(input);
+std::string input = "202124";
+std::string output1 = sha256(input);
+std::cout << "sha256('" << input << "'):" << output1 << std::endl;
 ```
