@@ -24,6 +24,11 @@ std::string Block::getHash() const
   return hash;
 }
 
+int64_t Block::getNonce() const
+{
+  return nonce;
+}
+
 void Block::mineBlock(uint32_t difficulty)
 {
   std::string str(difficulty, '0');

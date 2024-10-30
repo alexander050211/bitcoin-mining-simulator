@@ -14,6 +14,7 @@ public:
   uint32_t blockIndex; // Made public since it's accessed in main
 
   std::string getHash() const; // Made const
+  int64_t getNonce() const;
   void mineBlock(uint32_t difficulty);
   std::string calculateHash() const; // Made public since it's needed for validation
 
