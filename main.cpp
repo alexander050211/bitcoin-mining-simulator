@@ -1,11 +1,37 @@
-#include <bits/stdc++.h>
-#include "SHA256.h"
-#include "Block.h"
+#include <iostream>
+#include "Blockchain.h"
 
 int main()
 {
-  Block block1 = Block(0, "Block 1 Data");
-  block1.mineBlock(5);
-  std::cout << block1.getNonce() << std::endl;
+  // Create blockchain with mining difficulty of 4
+  std::cout << "Creating blockchain..." << std::endl;
+  Blockchain blockchain(4);
+
+  std::cout << "\nMining block 1..." << std::endl;
+  blockchain.addBlock("Transaction Data 1");
+
+  std::cout << "\nMining block 2..." << std::endl;
+  blockchain.addBlock("Transaction Data 2");
+
+  // Print the blockchain
+  std::cout << "\nBlockchain:\n";
+  for (const auto &block : blockchain.getChain())
+  {
+    std::cout << "Index: " << block.blockIndex << std::endl;
+    std::cout << "Hash: " << block.hash << std::endl;
+    std::cout << "Previous Hash: " << block.prevHash << std::endl;
+    std::cout << "------------------------" << std::endl;
+  }
+
+  // Verify blockchain integrity
+  if (blockchain.isValid())
+  {
+    std::cout << "\nBlockchain is valid!" << std::endl;
+  }
+  else
+  {
+    std::cout << "\nBlockchain is invalid!" << std::endl;
+  }
+
   return 0;
 }
