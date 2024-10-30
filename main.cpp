@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 #include "SHA256.h"
+#include "Block.h"
 
 int main()
 {
-  std::string input = "202124";
-  std::string output1 = sha256(input);
-  std::cout << "sha256('" << input << "'):" << output1 << std::endl;
+  Block block1 = Block(0, "Block 1 Data");
+  block1.mineBlock(5);
+  std::cout << block1.getNonce() << std::endl;
   return 0;
 }

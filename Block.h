@@ -9,23 +9,21 @@
 class Block
 {
 public:
-  Block(const std::vector<uint8_t> &previousHash, const std::vector<uint8_t> &data);
-  std::vector<uint8_t> calculateHash() const;
+  Block(uint32_t blockIndex, const std::string &data);
+  std::string hash;
+  std::string prevHash;
 
-  std::vector<uint8_t> getPreviousHash() const;
-  std::vector<uint8_t> getHash() const;
-  uint32_t getNonce() const;
-  time_t getTimestamp() const;
-
-  void setNonce(uint32_t newNonce);
-  void setHash(const std::vector<uint8_t> &newHash);
+  std::string getHash();
+  int64_t getNonce();
+  void mineBlock(uint32_t difficulty);
 
 private:
-  std::vector<uint8_t> previousHash;
-  std::vector<uint8_t> data;
-  std::vector<uint8_t> hash;
-  uint32_t nonce;
+  std::string data;
+  int64_t nonce;
   time_t timestamp;
+  uint32_t blockIndex;
+
+  std::string calculateHash() const;
 };
 
 #endif // BLOCK_H
