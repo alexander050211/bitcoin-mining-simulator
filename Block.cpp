@@ -12,10 +12,13 @@ Block::Block(uint32_t blockIndex, const std::vector<Transaction> &transactions)
   this->timestamp = time(nullptr);
 
   // Add mining reward transaction
-  Transaction rewardTx("Network", "Miner", calculateBlockReward());
-  this->transactions.push_back(rewardTx);
+  // Only add mining reward if this isn't the genesis block
+  if (blockIndex > 0)
+  {
+    Transaction rewardTx("Network", "Miner", calculateBlockReward());
+    this->transactions.push_back(rewardTx);
+  }
 }
-
 std::string Block::calculateHash() const
 {
   std::stringstream ss;
@@ -51,4 +54,9 @@ double Block::calculateBlockReward() const
   // Simple reward halving every 100 blocks (for demonstration)
   uint32_t halvings = blockIndex / 100;
   return BLOCK_REWARD / (1 << halvings);
+}
+
+int64_t Block::getNonce() const
+{
+  return nonce;
 }

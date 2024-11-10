@@ -20,12 +20,13 @@ public:
   std::string calculateHash() const;
   const std::vector<Transaction> &getTransactions() const { return transactions; }
   double calculateBlockReward() const;
+  int64_t getNonce() const; // Added nonce getter
 
 private:
   std::vector<Transaction> transactions;
   int64_t nonce;
   time_t timestamp;
-  const double BLOCK_REWARD = 50.0; // Mining reward (like Bitcoin's original reward)
+  const double BLOCK_REWARD = 50.0;
 };
 
 #endif // BLOCK_H

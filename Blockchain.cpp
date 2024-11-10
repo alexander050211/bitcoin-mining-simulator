@@ -1,5 +1,7 @@
 #include "Blockchain.h"
 #include <stdexcept>
+#include <iostream>
+#include <bits/chrono.h>
 
 Blockchain::Blockchain(uint32_t difficulty) : difficulty(difficulty)
 {
@@ -11,12 +13,24 @@ Blockchain::Blockchain(uint32_t difficulty) : difficulty(difficulty)
 
 void Blockchain::addBlock(const std::vector<Transaction> &transactions)
 {
+  std::cout << "Creating new block with " << transactions.size() << " transactions...\n";
+
   Block newBlock(chain.size(), transactions);
   newBlock.prevHash = chain.back().getHash();
-  newBlock.mineBlock(difficulty);
-  chain.push_back(newBlock);
 
-  // Clear processed transactions from pending pool
+  std::cout << "Mining block...\n";
+  auto startTime = std::chrono::steady_clock::now();
+
+  newBlock.mineBlock(difficulty);
+
+  auto endTime = std::chrono::steady_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime);
+
+  std::cout << "Block mined! Nonce: " << newBlock.getNonce() << "\n";
+  std::cout << "Mining took: " << duration.count() << " seconds\n";
+  std::cout << "Block hash: " << newBlock.getHash() << "\n\n";
+
+  chain.push_back(newBlock);
   pendingTransactions.clear();
 }
 
@@ -65,32 +79,35 @@ double Blockchain::getBalance(const std::string &address) const
 {
   double balance = 0.0;
 
-  // Go through all blocks and their transactions
+  // Go through all blocks
   for (const Block &block : chain)
   {
-    for (const Transaction &transaction : block.getTransactions())
+    const std::vector<Transaction> &transactions = block.getTransactions();
+    for (const Transaction &tx : transactions)
     {
-      if (transaction.getFrom() == address)
+      // If this address is sender, subtract amount
+      if (tx.getFrom() == address)
       {
-        balance -= transaction.getAmount();
+        balance -= tx.getAmount();
       }
-      if (transaction.getTo() == address)
+      // If this address is receiver, add amount
+      if (tx.getTo() == address)
       {
-        balance += transaction.getAmount();
+        balance += tx.getAmount();
       }
     }
   }
 
-  // Check pending transactions too
-  for (const Transaction &transaction : pendingTransactions)
+  // Also check pending transactions
+  for (const Transaction &tx : pendingTransactions)
   {
-    if (transaction.getFrom() == address)
+    if (tx.getFrom() == address)
     {
-      balance -= transaction.getAmount();
+      balance -= tx.getAmount();
     }
-    if (transaction.getTo() == address)
+    if (tx.getTo() == address)
     {
-      balance += transaction.getAmount();
+      balance += tx.getAmount();
     }
   }
 
