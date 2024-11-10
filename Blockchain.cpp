@@ -62,16 +62,17 @@ bool Blockchain::isTransactionValid(const Transaction &transaction) const
     return false;
   }
 
-  // Check if sender has enough balance (except for mining rewards)
-  if (transaction.getFrom() != "Network")
-  { // Skip check for mining rewards
-    double senderBalance = getBalance(transaction.getFrom());
-    if (senderBalance < transaction.getAmount())
-    {
-      return false;
+  /*
+    // Check if sender has enough balance (except for mining rewards)
+    if (transaction.getFrom() != "Network")
+    { // Skip check for mining rewards
+      double senderBalance = getBalance(transaction.getFrom());
+      if (senderBalance < transaction.getAmount())
+      {
+        return false;
+      }
     }
-  }
-
+  */
   return true;
 }
 

@@ -24,7 +24,6 @@ private:
   std::vector<Transaction> pendingTransactions; // Transaction pool
   uint32_t difficulty;
   const size_t MAX_TRANSACTIONS_PER_BLOCK = 5; // Limit transactions per block
-
   bool isTransactionValid(const Transaction &transaction) const;
 };
 
