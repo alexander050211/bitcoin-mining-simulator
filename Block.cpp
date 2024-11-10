@@ -2,31 +2,37 @@
 #include "SHA256.h"
 #include <sstream>
 #include <iomanip>
+#include <cstdint>
 
-Block::Block(uint32_t blockIndex, const std::string &data)
+Block::Block(uint32_t blockIndex, const std::vector<Transaction> &transactions)
 {
   this->blockIndex = blockIndex;
-  this->data = data;
+  this->transactions = transactions;
   this->nonce = 0;
   this->timestamp = time(nullptr);
+
+  // Add mining reward transaction
+  Transaction rewardTx("Network", "Miner", calculateBlockReward());
+  this->transactions.push_back(rewardTx);
 }
 
 std::string Block::calculateHash() const
 {
   std::stringstream ss;
-  ss << blockIndex << timestamp << data << nonce << prevHash;
+  ss << blockIndex << timestamp << nonce << prevHash;
+
+  // Include all transaction hashes in block hash
+  for (const Transaction &tx : transactions)
+  {
+    ss << tx.calculateHash();
+  }
 
   return sha256(ss.str());
 }
 
 std::string Block::getHash() const
-{ // Made const
-  return hash;
-}
-
-int64_t Block::getNonce() const
 {
-  return nonce;
+  return hash;
 }
 
 void Block::mineBlock(uint32_t difficulty)
@@ -38,4 +44,11 @@ void Block::mineBlock(uint32_t difficulty)
     nonce++;
     hash = calculateHash();
   } while (hash.substr(0, difficulty) != str);
+}
+
+double Block::calculateBlockReward() const
+{
+  // Simple reward halving every 100 blocks (for demonstration)
+  uint32_t halvings = blockIndex / 100;
+  return BLOCK_REWARD / (1 << halvings);
 }

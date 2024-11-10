@@ -3,26 +3,30 @@
 
 int main()
 {
-  // Create blockchain with mining difficulty of 4
+  // Create blockchain
   std::cout << "Creating blockchain..." << std::endl;
-  Blockchain blockchain(5);
+  Blockchain blockchain(4);
 
-  std::cout << "\nMining block 1..." << std::endl;
-  blockchain.addBlock("Transaction Data 1");
+  // Create some sample transactions
+  Transaction tx1("Alice", "Bob", 50.0);
+  Transaction tx2("Bob", "Charlie", 30.0);
+  Transaction tx3("Charlie", "Alice", 20.0);
 
-  std::cout << "\nMining block 2..." << std::endl;
-  blockchain.addBlock("Transaction Data 2");
+  // Add transactions to blockchain
+  std::cout << "\nAdding transactions..." << std::endl;
+  blockchain.addTransaction(tx1);
+  blockchain.addTransaction(tx2);
+  blockchain.addTransaction(tx3);
 
-  // Print the blockchain
-  std::cout << "\nBlockchain:\n";
-  for (const auto &block : blockchain.getChain())
-  {
-    std::cout << "Index: " << block.blockIndex << std::endl;
-    std::cout << "Nonce: " << block.getNonce() << std::endl;
-    std::cout << "Hash: " << block.hash << std::endl;
-    std::cout << "Previous Hash: " << block.prevHash << std::endl;
-    std::cout << "------------------------" << std::endl;
-  }
+  // Mine the block (this will include pending transactions)
+  std::cout << "\nMining block..." << std::endl;
+  blockchain.addBlock(blockchain.getPendingTransactions());
+
+  // Print balances
+  std::cout << "\nFinal Balances:" << std::endl;
+  std::cout << "Alice: " << blockchain.getBalance("Alice") << std::endl;
+  std::cout << "Bob: " << blockchain.getBalance("Bob") << std::endl;
+  std::cout << "Charlie: " << blockchain.getBalance("Charlie") << std::endl;
 
   // Verify blockchain integrity
   if (blockchain.isValid())
