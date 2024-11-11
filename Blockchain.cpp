@@ -1,9 +1,11 @@
 #include "Account.h"
 #include "Blockchain.h"
+#include "Transaction.h"
 #include <stdexcept>
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <vector>
 
 Blockchain::Blockchain(uint32_t difficulty) : difficulty(difficulty)
 {
@@ -23,6 +25,7 @@ void Blockchain::addBlock(const std::vector<Transaction> &transactions)
             << "Creating new block with " << transactions.size() << " transactions...\n";
 
   Block newBlock(chain.size(), transactions);
+  auto tx = newBlock.getTransactions().back();
   newBlock.prevHash = chain.back().getHash();
 
   std::cout << "Mining block #" << chain.size() << "...\n";
@@ -35,10 +38,11 @@ void Blockchain::addBlock(const std::vector<Transaction> &transactions)
 
   std::cout << "Block mined! Nonce: " << newBlock.getNonce() << "\n";
   std::cout << "Mining took: " << duration.count() << " seconds\n";
-  std::cout << "Block hash: " << newBlock.getHash() << "\n\n";
+  std::cout << "Block hash: " << newBlock.getHash() << "\n";
+  std::cout << "Reward given: " << tx.getFrom() << " -> " << tx.getTo() << ": " << tx.getAmount() << " coins\n";
 
   chain.push_back(newBlock);
-  updateAccountBalances(transactions);
+  updateAccountBalances(newBlock.getTransactions());
   pendingTransactions.clear();
 }
 
