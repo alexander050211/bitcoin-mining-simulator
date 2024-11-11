@@ -27,7 +27,7 @@ private:
   std::vector<Transaction> pendingTransactions;
   std::unordered_map<std::string, Account> accounts;
   uint32_t difficulty;
-  const size_t MAX_TRANSACTIONS_PER_BLOCK = 6;
+  const size_t MAX_TRANSACTIONS_PER_BLOCK = 10;
 
   bool isTransactionValid(const Transaction &transaction) const;
   void updateAccountBalances(const std::vector<Transaction> &transactions);
