@@ -1,94 +1,31 @@
+#include "Interface.h"
 #include <iostream>
-#include <random>
-#include <string>
-#include <iomanip>
-#include "Blockchain.h"
 
-void printBalance(const Blockchain &blockchain, const std::string &address)
+int main(int argc, char *argv[])
 {
-  std::cout << std::setw(10) << address << ": "
-            << std::fixed << std::setprecision(2)
-            << blockchain.getBalance(address) << " coins" << std::endl;
-}
-
-void printAllBalances(const Blockchain &blockchain)
-{
-  std::cout << "\nCurrent Balances:" << std::endl;
-  std::cout << std::string(30, '-') << std::endl;
-
-  for (const auto &address : blockchain.getAccountAddresses())
+  uint32_t difficulty = 4;
+  if (argc > 1)
   {
-    printBalance(blockchain, address);
-  }
-
-  std::cout << std::string(30, '-') << std::endl;
-}
-
-// Generate a random transaction between accounts
-Transaction generateRandomTransaction(const std::vector<std::string> &addresses, std::mt19937 &gen)
-{
-  std::uniform_int_distribution<> addressDist(0, addresses.size() - 1);
-  std::uniform_real_distribution<> amountDist(10.0, 100.0);
-
-  std::string from = addresses[addressDist(gen)];
-  std::string to;
-  do
-  {
-    to = addresses[addressDist(gen)];
-  } while (to == from || to == "Network" || from == "Network");
-
-  double amount = amountDist(gen);
-  return Transaction(from, to, amount);
-}
-
-int main()
-{
-  // Create blockchain with difficulty 4
-  std::cout << "Creating blockchain...\n";
-  Blockchain blockchain(4);
-
-  // Create multiple accounts
-  std::vector<std::string> agents = {"Alice", "Bob", "Charlie", "David", "Eve", "Frank"};
-  for (const auto &agent : agents)
-  {
-    blockchain.createAccount(agent, 1000.0); // Each starts with 1000 coins
-  }
-
-  // Print initial balances
-  std::cout << "\nInitial balances:" << std::endl;
-  printAllBalances(blockchain);
-
-  // Set up random number generator
-  std::random_device rd;
-  std::mt19937 gen(rd());
-
-  // Create multiple blocks of random transactions
-  for (int block = 1; block <= 50; ++block)
-  {
-    std::cout << "\nCreating transactions for block #" << block << "...\n";
-
-    // Generate random transactions for this block
-    for (int i = 0; i < 5; ++i)
+    try
     {
-      auto tx = generateRandomTransaction(agents, gen);
-      blockchain.addTransaction(tx);
+      difficulty = std::stoi(argv[1]);
     }
-
-    // Mine the block and show updated balances
-    if (!blockchain.getPendingTransactions().empty())
-      blockchain.addBlock(blockchain.getPendingTransactions());
-    printAllBalances(blockchain);
+    catch (const std::exception &e)
+    {
+      std::cerr << "Invalid difficulty argument. Using default difficulty of 4." << std::endl;
+    }
   }
 
-  // Verify blockchain integrity
-  if (blockchain.isValid())
-  {
-    std::cout << "\nBlockchain integrity verified!" << std::endl;
-  }
-  else
-  {
-    std::cout << "\nBlockchain integrity check failed!" << std::endl;
-  }
+  std::cout << "Creating blockchain with difficulty " << difficulty << "\n";
+  Blockchain blockchain(difficulty);
+
+  // Create system accounts
+  blockchain.createAccount("Network", 1000000.0);
+  blockchain.createAccount("Miner", 0.0);
+
+  // Start CLI
+  Interface cli(blockchain);
+  cli.start();
 
   return 0;
 }

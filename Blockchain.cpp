@@ -39,7 +39,7 @@ void Blockchain::addBlock(const std::vector<Transaction> &transactions)
   std::cout << "Block mined! Nonce: " << newBlock.getNonce() << "\n";
   std::cout << "Mining took: " << duration.count() << " seconds\n";
   std::cout << "Block hash: " << newBlock.getHash() << "\n";
-  std::cout << "Reward given: " << tx.getFrom() << " -> " << tx.getTo() << ": " << tx.getAmount() << " coins\n";
+  std::cout << "Reward given: " << tx.getFrom() << " -> " << tx.getTo() << ": " << tx.getAmount() << " coins\n\n";
 
   chain.push_back(newBlock);
   updateAccountBalances(newBlock.getTransactions());
