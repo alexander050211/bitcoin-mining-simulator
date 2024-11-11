@@ -24,6 +24,8 @@ Interface::Interface(Blockchain &bc) : blockchain(bc), running(true)
   { running = false; };
   commands["random"] = [this](const auto &args)
   { handleRandomTransactions(args); };
+  commands["chain"] = [this](const auto &args)
+  { handleShowChain(args); };
 }
 
 // Helper methods
@@ -217,6 +219,23 @@ void Interface::handleRandomTransactions(const std::vector<std::string> &args)
   }
 }
 
+void Interface::handleShowChain(const std::vector<std::string> &args)
+{
+  const auto &chain = blockchain.getChain();
+  std::cout << "\nBlockchain:" << std::endl;
+  std::cout << std::string(77, '-') << std::endl;
+
+  for (size_t i = 0; i < chain.size(); i++)
+  {
+    const auto &block = chain[i];
+    std::cout << "Block " << i << ":" << std::endl;
+    std::cout << "  Hash: " << block.getHash() << std::endl;
+    std::cout << "  Prev Hash: " << block.prevHash << std::endl;
+    std::cout << "  Transactions: " << block.getTransactions().size() - (block.getTransactions().size() ? 1 : 0) << std::endl;
+    std::cout << std::string(77, '-') << std::endl;
+  }
+}
+
 void Interface::handleHelp(const std::vector<std::string> &args)
 {
   std::cout << "\nAvailable commands:" << std::endl;
@@ -226,6 +245,7 @@ void Interface::handleHelp(const std::vector<std::string> &args)
   std::cout << "  mine                                       - Mine pending transactions" << std::endl;
   std::cout << "  balances                                   - Show all account balances" << std::endl;
   std::cout << "  pending                                    - Show pending transactions" << std::endl;
+  std::cout << "  chain                                      - Show the blockchain" << std::endl;
   std::cout << "  help                                       - Show this help message" << std::endl;
   std::cout << "  exit                                       - Exit the program" << std::endl;
 }

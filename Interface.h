@@ -29,6 +29,7 @@ private:
   void handleShowPending(const std::vector<std::string> &args);
   void handleHelp(const std::vector<std::string> &args);
   void handleRandomTransactions(const std::vector<std::string> &args);
+  void handleShowChain(const std::vector<std::string> &args);
 
 public:
   explicit Interface(Blockchain &bc);
