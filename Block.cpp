@@ -51,8 +51,8 @@ void Block::mineBlock(uint32_t difficulty)
 
 double Block::calculateBlockReward() const
 {
-  // Simple reward halving every 100 blocks (for demonstration)
-  uint32_t halvings = blockIndex / 100;
+  // Simple reward halving every 10 blocks (for demonstration)
+  uint32_t halvings = blockIndex / 10;
   return BLOCK_REWARD / (1 << halvings);
 }
 

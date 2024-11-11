@@ -63,9 +63,9 @@ int main()
   std::mt19937 gen(rd());
 
   // Create multiple blocks of random transactions
-  for (int block = 1; block <= 3; ++block)
+  for (int block = 1; block <= 50; ++block)
   {
-    std::cout << "\nCreating block " << block << " transactions...\n";
+    std::cout << "\nCreating transactions for block #" << block << "...\n";
 
     // Generate random transactions for this block
     for (int i = 0; i < 5; ++i)
