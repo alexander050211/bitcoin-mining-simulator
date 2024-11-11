@@ -1,33 +1,33 @@
-## How to use SHA256
-You don't have to create an instance of the SHA256 class to use it. Just call the static function ```std::string sha256(std::string input);```
-### Example code
-```cpp
-std::string input = "202124";
-std::string output1 = sha256(input);
-std::cout << "sha256('" << input << "'):" << output1 << std::endl;
+## How to run
+When initially running, the user can manually set the mining difficulty. If not, the default difficulty is set to 4. Since the time complexity for mining is $O(16^{difficulty})$, I suggest to keep the difficulty 5 or lower. If an invalid input is given as the difficulty, it will be set to default.
+
+## Commands
+There are various commands to use. You can type "help" to get information about these commands.
+
+### create_account
+You can create an account by giving the name and initial balance. The balance will compute up to two decimal places.
 ```
-## How to use Block
-The Block class implements the concept of a block in a blockchain. It can be created and mined with the code below.
-```cpp
-Block block1 = Block(0, "Block 1 Data");
-block1.mineBlock(5);
-std::cout << block1.getNonce() << std::endl;
+> create_account Alice 1000.00
+Account created successfully
 ```
 
-## How to use Blockchain
-You can create an instance of the Blockchain with a specific mining difficulty. When the instance is created, the genesis block is added to the chain. You can then start adding blocks to the chain by only giving the data of the next block.
-### Example code
-```cpp
-Blockchain blockchain(4);
-blockchain.addBlock("Transaction Data 1");
-```
-After adding blocks, you can print the information of the blockchain using range-based for statements.
-```cpp
-for (const auto &block : blockchain.getChain())
-{
-  std::cout << "Index: " << block.blockIndex << std::endl;
-  std::cout << "Hash: " << block.hash << std::endl;
-  std::cout << "Previous Hash: " << block.prevHash << std::endl;
-  std::cout << "------------------------" << std::endl;
-}
-```
+### random
+A single block of the blockchain can hold up to 10 transactions. It will be annoying for the user to create enough transactions to mine multiple blocks. So, you can use this command to generate random transactions. Of course, there should be at least 2 accounts for this to happen.
+
+### mine
+Transactions are temporarily stored in a pending pool. A new block is mined whenever the number of transactions in the pool exceed the maximum limit. Whenever the user tends to manually empty the pool, you can use this command. There should be at least 1 pending transaction.
+
+### balances
+You can use this command to see the current balance for all accounts.
+
+### pending
+You can use this command to see the pending transactions.
+
+### chain
+You can use this command to see the information of all blocks including their hash values that form the blockchain.
+
+### help
+Whenever you feel lost, you can always use this command to use other commands properly.
+
+### exit
+You can use this command to terminate the program.
