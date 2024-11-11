@@ -1,10 +1,16 @@
+#include "Account.h"
 #include "Blockchain.h"
 #include <stdexcept>
 #include <iostream>
-#include <bits/chrono.h>
+#include <string>
+#include <chrono>
 
 Blockchain::Blockchain(uint32_t difficulty) : difficulty(difficulty)
 {
+  // Create system account for mining rewards
+  createAccount("Network", 1000000.0); // Large balance for mining rewards
+  createAccount("Miner", 0.0);         // Initial miner account
+
   // Create genesis block with no transactions
   std::vector<Transaction> genesisTransactions;
   chain.emplace_back(Block(0, genesisTransactions));
@@ -31,21 +37,20 @@ void Blockchain::addBlock(const std::vector<Transaction> &transactions)
   std::cout << "Block hash: " << newBlock.getHash() << "\n\n";
 
   chain.push_back(newBlock);
+  updateAccountBalances(transactions);
   pendingTransactions.clear();
 }
 
 bool Blockchain::addTransaction(const Transaction &transaction)
 {
-  // Validate transaction
   if (!isTransactionValid(transaction))
   {
+    std::cout << "Transaction invalid: Insufficient balance or invalid account\n";
     return false;
   }
 
-  // Add to pending transactions
   pendingTransactions.push_back(transaction);
 
-  // If we have enough transactions, create a new block
   if (pendingTransactions.size() >= MAX_TRANSACTIONS_PER_BLOCK)
   {
     addBlock(pendingTransactions);
@@ -54,65 +59,57 @@ bool Blockchain::addTransaction(const Transaction &transaction)
   return true;
 }
 
+bool Blockchain::createAccount(const std::string &address, double initialBalance)
+{
+  if (accounts.find(address) != accounts.end())
+  {
+    return false; // Account already exists
+  }
+
+  Account newAccount = Account(address, initialBalance);
+  accounts.emplace(address, newAccount);
+  return true;
+}
+
 bool Blockchain::isTransactionValid(const Transaction &transaction) const
 {
-  // Basic validation
-  if (!transaction.isValid())
+  // Check if accounts exist
+  auto fromIter = accounts.find(transaction.getFrom());
+  auto toIter = accounts.find(transaction.getTo());
+
+  if (fromIter == accounts.end() || toIter == accounts.end())
   {
     return false;
   }
 
-  /*
-    // Check if sender has enough balance (except for mining rewards)
-    if (transaction.getFrom() != "Network")
-    { // Skip check for mining rewards
-      double senderBalance = getBalance(transaction.getFrom());
-      if (senderBalance < transaction.getAmount())
-      {
-        return false;
-      }
-    }
-  */
-  return true;
+  // Skip balance check for mining rewards
+  if (transaction.getFrom() == "Network")
+  {
+    return true;
+  }
+
+  // Check if sender has enough balance
+  return fromIter->second.getBalance() >= transaction.getAmount();
 }
 
 double Blockchain::getBalance(const std::string &address) const
 {
-  double balance = 0.0;
-
-  // Go through all blocks
-  for (const Block &block : chain)
+  auto it = accounts.find(address);
+  if (it != accounts.end())
   {
-    const std::vector<Transaction> &transactions = block.getTransactions();
-    for (const Transaction &tx : transactions)
-    {
-      // If this address is sender, subtract amount
-      if (tx.getFrom() == address)
-      {
-        balance -= tx.getAmount();
-      }
-      // If this address is receiver, add amount
-      if (tx.getTo() == address)
-      {
-        balance += tx.getAmount();
-      }
-    }
+    return it->second.getBalance();
   }
+  return 0.0;
+}
 
-  // Also check pending transactions
-  for (const Transaction &tx : pendingTransactions)
+std::vector<std::string> Blockchain::getAccountAddresses() const
+{
+  std::vector<std::string> addresses;
+  for (const auto &pair : accounts)
   {
-    if (tx.getFrom() == address)
-    {
-      balance -= tx.getAmount();
-    }
-    if (tx.getTo() == address)
-    {
-      balance += tx.getAmount();
-    }
+    addresses.push_back(pair.first);
   }
-
-  return balance;
+  return addresses;
 }
 
 bool Blockchain::isValid() const
@@ -146,12 +143,27 @@ bool Blockchain::isValid() const
   return true;
 }
 
+const std::vector<Transaction> &Blockchain::getPendingTransactions() const
+{
+  return pendingTransactions;
+}
+
 const std::vector<Block> &Blockchain::getChain() const
 {
   return chain;
 }
 
-const std::vector<Transaction> &Blockchain::getPendingTransactions() const
+void Blockchain::updateAccountBalances(const std::vector<Transaction> &transactions)
 {
-  return pendingTransactions;
+  for (const auto &tx : transactions)
+  {
+    if (accounts.find(tx.getFrom()) != accounts.end())
+    {
+      accounts.at(tx.getFrom()).adjustBalance(-tx.getAmount());
+    }
+    if (accounts.find(tx.getTo()) != accounts.end())
+    {
+      accounts.at(tx.getTo()).adjustBalance(tx.getAmount());
+    }
+  }
 }

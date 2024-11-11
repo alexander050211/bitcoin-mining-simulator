@@ -1,4 +1,6 @@
 #include <iostream>
+#include <random>
+#include <string>
 #include <iomanip>
 #include "Blockchain.h"
 
@@ -13,12 +15,30 @@ void printAllBalances(const Blockchain &blockchain)
 {
   std::cout << "\nCurrent Balances:" << std::endl;
   std::cout << std::string(30, '-') << std::endl;
-  printBalance(blockchain, "Alice");
-  printBalance(blockchain, "Bob");
-  printBalance(blockchain, "Charlie");
-  printBalance(blockchain, "David");
-  printBalance(blockchain, "Miner");
+
+  for (const auto &address : blockchain.getAccountAddresses())
+  {
+    printBalance(blockchain, address);
+  }
+
   std::cout << std::string(30, '-') << std::endl;
+}
+
+// Generate a random transaction between accounts
+Transaction generateRandomTransaction(const std::vector<std::string> &addresses, std::mt19937 &gen)
+{
+  std::uniform_int_distribution<> addressDist(0, addresses.size() - 1);
+  std::uniform_real_distribution<> amountDist(10.0, 100.0);
+
+  std::string from = addresses[addressDist(gen)];
+  std::string to;
+  do
+  {
+    to = addresses[addressDist(gen)];
+  } while (to == from || to == "Network" || from == "Network");
+
+  double amount = amountDist(gen);
+  return Transaction(from, to, amount);
 }
 
 int main()
@@ -27,32 +47,41 @@ int main()
   std::cout << "Creating blockchain...\n";
   Blockchain blockchain(4);
 
-  // First block of transactions
-  std::cout << "\nCreating first set of transactions...\n";
-  blockchain.addTransaction(Transaction("Alice", "Bob", 50.0));
-  blockchain.addTransaction(Transaction("Bob", "Charlie", 30.0));
-  blockchain.addTransaction(Transaction("Charlie", "David", 20.0));
-  blockchain.addTransaction(Transaction("David", "Alice", 15.0));
-  blockchain.addTransaction(Transaction("Alice", "Charlie", 25.0));
+  // Create multiple accounts
+  std::vector<std::string> agents = {"Alice", "Bob", "Charlie", "David", "Eve", "Frank"};
+  for (const auto &agent : agents)
+  {
+    blockchain.createAccount(agent, 1000.0); // Each starts with 1000 coins
+  }
 
-  blockchain.addTransaction(Transaction("Alice", "Charlie", 25.0));
-
+  // Print initial balances
+  std::cout << "\nInitial balances:" << std::endl;
   printAllBalances(blockchain);
 
-  // Second block of transactions
-  std::cout << "\nCreating second set of transactions...\n";
-  blockchain.addTransaction(Transaction("Bob", "Alice", 40.0));
-  blockchain.addTransaction(Transaction("Charlie", "Bob", 25.0));
-  blockchain.addTransaction(Transaction("David", "Charlie", 35.0));
-  blockchain.addTransaction(Transaction("Alice", "David", 20.0));
-  blockchain.addTransaction(Transaction("Bob", "David", 15.0));
+  // Set up random number generator
+  std::random_device rd;
+  std::mt19937 gen(rd());
 
-  printAllBalances(blockchain);
+  // Create multiple blocks of random transactions
+  for (int block = 1; block <= 3; ++block)
+  {
+    std::cout << "\nCreating block " << block << " transactions...\n";
 
-  // Create final block for pending transactions
-  if (blockchain.getPendingTransactions().size() > 0)
+    // Generate random transactions for this block
+    for (int i = 0; i < 5; ++i)
+    {
+      auto tx = generateRandomTransaction(agents, gen);
+      if (blockchain.addTransaction(tx))
+      {
+        std::cout << "Transaction added: " << tx.getFrom() << " -> "
+                  << tx.getTo() << ": " << tx.getAmount() << " coins\n";
+      }
+    }
+
+    // Mine the block and show updated balances
     blockchain.addBlock(blockchain.getPendingTransactions());
-  printAllBalances(blockchain);
+    printAllBalances(blockchain);
+  }
 
   // Verify blockchain integrity
   if (blockchain.isValid())
