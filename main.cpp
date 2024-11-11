@@ -71,15 +71,12 @@ int main()
     for (int i = 0; i < 5; ++i)
     {
       auto tx = generateRandomTransaction(agents, gen);
-      if (blockchain.addTransaction(tx))
-      {
-        std::cout << "Transaction added: " << tx.getFrom() << " -> "
-                  << tx.getTo() << ": " << tx.getAmount() << " coins\n";
-      }
+      blockchain.addTransaction(tx);
     }
 
     // Mine the block and show updated balances
-    blockchain.addBlock(blockchain.getPendingTransactions());
+    if (!blockchain.getPendingTransactions().empty())
+      blockchain.addBlock(blockchain.getPendingTransactions());
     printAllBalances(blockchain);
   }
 

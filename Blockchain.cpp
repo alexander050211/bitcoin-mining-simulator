@@ -19,12 +19,13 @@ Blockchain::Blockchain(uint32_t difficulty) : difficulty(difficulty)
 
 void Blockchain::addBlock(const std::vector<Transaction> &transactions)
 {
-  std::cout << "Creating new block with " << transactions.size() << " transactions...\n";
+  std::cout << "\n"
+            << "Creating new block with " << transactions.size() << " transactions...\n";
 
   Block newBlock(chain.size(), transactions);
   newBlock.prevHash = chain.back().getHash();
 
-  std::cout << "Mining block...\n";
+  std::cout << "Mining block #" << chain.size() << "...\n";
   auto startTime = std::chrono::steady_clock::now();
 
   newBlock.mineBlock(difficulty);
@@ -48,7 +49,7 @@ bool Blockchain::addTransaction(const Transaction &transaction)
     std::cout << "Transaction invalid: Insufficient balance or invalid account\n";
     return false;
   }
-
+  std::cout << "Transaction added: " << transaction.getFrom() << " -> " << transaction.getTo() << ": " << transaction.getAmount() << " coins\n";
   pendingTransactions.push_back(transaction);
 
   if (pendingTransactions.size() >= MAX_TRANSACTIONS_PER_BLOCK)
