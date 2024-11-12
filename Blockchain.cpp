@@ -25,7 +25,10 @@ void Blockchain::addBlock(const std::vector<Transaction> &transactions)
             << "Creating new block with " << transactions.size() << " transactions...\n";
 
   Block newBlock(chain.size(), transactions);
+
+  // Get the reward transaction
   auto tx = newBlock.getTransactions().back();
+
   newBlock.prevHash = chain.back().getHash();
 
   std::cout << "Mining block #" << chain.size() << "...\n";
@@ -33,6 +36,7 @@ void Blockchain::addBlock(const std::vector<Transaction> &transactions)
 
   newBlock.mineBlock(difficulty);
 
+  // Measure time spend in mining
   auto endTime = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime);
 
@@ -56,6 +60,7 @@ bool Blockchain::addTransaction(const Transaction &transaction)
   std::cout << "Transaction added: " << transaction.getFrom() << " -> " << transaction.getTo() << ": " << transaction.getAmount() << " coins\n";
   pendingTransactions.push_back(transaction);
 
+  // Empty pendingTransactions if it is full
   if (pendingTransactions.size() >= MAX_TRANSACTIONS_PER_BLOCK)
   {
     addBlock(pendingTransactions);
@@ -162,6 +167,7 @@ void Blockchain::updateAccountBalances(const std::vector<Transaction> &transacti
 {
   for (const auto &tx : transactions)
   {
+    // The sender and getter should be an existing account
     if (accounts.find(tx.getFrom()) != accounts.end())
     {
       accounts.at(tx.getFrom()).adjustBalance(-tx.getAmount());

@@ -2,8 +2,7 @@
 #include "SHA256.h"
 #include <sstream>
 
-Transaction::Transaction(const std::string &from, const std::string &to, double amount)
-    : fromAddress(from), toAddress(to), amount(amount)
+Transaction::Transaction(const std::string &from, const std::string &to, double amount) : fromAddress(from), toAddress(to), amount(amount)
 {
   timestamp = time(nullptr);
 }

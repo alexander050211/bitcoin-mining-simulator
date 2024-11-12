@@ -3,6 +3,7 @@
 
 int main(int argc, char *argv[])
 {
+  // Default difficulty set to 4
   uint32_t difficulty = 4;
   if (argc > 1)
   {
