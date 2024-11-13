@@ -78,6 +78,11 @@ void Interface::handleCreateAccount(const std::vector<std::string> &args)
   try
   {
     double balance = std::stod(args[1]);
+    if (balance <= 0)
+    {
+      std::cout << "Invalid balance amount" << std::endl;
+      return;
+    }
     if (blockchain.createAccount(args[0], balance))
     {
       std::cout << "Account created successfully" << std::endl;

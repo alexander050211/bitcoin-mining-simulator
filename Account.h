@@ -15,7 +15,7 @@ public:
 
 private:
   std::string address;
-  double balance = 1000.0;
+  double balance;
 };
 
 #endif // ACCOUNT_H
