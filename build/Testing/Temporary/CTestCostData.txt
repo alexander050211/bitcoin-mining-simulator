@@ -1,8 +1,7 @@
 runTests 4 0.0265701
-dummyTest 3 0.00939184
-addTransactionTest 3 0.659775
-createAccountTest 0 0
-getBalanceTest 1 0.110391
-addBlockTest 1 0.110414
+dummyTest 5 0.0068936
+addTransactionTest 5 0.424653
+createAccountTest 2 0.0975807
+getBalanceTest 3 0.0449857
+addBlockTest 3 0.119497
 ---
-createAccountTest

@@ -1,10 +1,10 @@
-Start testing: Dec 09 13:40 KST
+Start testing: Dec 09 14:25 KST
 ----------------------------------------------------------
 1/5 Testing: dummyTest
 1/5 Test: dummyTest
 Command: "/mnt/c/github/computer-programming/bitcoin-mining-simulator/build/dummyTest"
 Directory: /mnt/c/github/computer-programming/bitcoin-mining-simulator/build
-"dummyTest" start time: Dec 09 13:40 KST
+"dummyTest" start time: Dec 09 14:25 KST
 Output:
 ----------------------------------------------------------
 [==========] Running 1 test from 1 test suite.
@@ -12,16 +12,16 @@ Output:
 [----------] 1 test from HelloTest
 [ RUN      ] HelloTest.BasicAssertions
 [       OK ] HelloTest.BasicAssertions (0 ms)
-[----------] 1 test from HelloTest (0 ms total)
+[----------] 1 test from HelloTest (2 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (0 ms total)
+[==========] 1 test from 1 test suite ran. (2 ms total)
 [  PASSED  ] 1 test.
 <end of output>
 Test time =   0.03 sec
 ----------------------------------------------------------
 Test Passed.
-"dummyTest" end time: Dec 09 13:40 KST
+"dummyTest" end time: Dec 09 14:25 KST
 "dummyTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -29,7 +29,7 @@ Test Passed.
 2/5 Test: addTransactionTest
 Command: "/mnt/c/github/computer-programming/bitcoin-mining-simulator/build/addTransactionTest"
 Directory: /mnt/c/github/computer-programming/bitcoin-mining-simulator/build
-"addTransactionTest" start time: Dec 09 13:40 KST
+"addTransactionTest" start time: Dec 09 14:25 KST
 Output:
 ----------------------------------------------------------
 [==========] Running 4 tests from 1 test suite.
@@ -37,13 +37,13 @@ Output:
 [----------] 4 tests from BlockchainTest
 [ RUN      ] BlockchainTest.AddValidTransaction
 Transaction added: Alice -> Bob: 10 coins
-[       OK ] BlockchainTest.AddValidTransaction (60 ms)
+[       OK ] BlockchainTest.AddValidTransaction (40 ms)
 [ RUN      ] BlockchainTest.AddInvalidTransactionInsufficientBalance
 Transaction invalid: Insufficient balance or invalid account
-[       OK ] BlockchainTest.AddInvalidTransactionInsufficientBalance (60 ms)
+[       OK ] BlockchainTest.AddInvalidTransactionInsufficientBalance (37 ms)
 [ RUN      ] BlockchainTest.AddInvalidTransactionNonExistentAccount
 Transaction invalid: Insufficient balance or invalid account
-[       OK ] BlockchainTest.AddInvalidTransactionNonExistentAccount (60 ms)
+[       OK ] BlockchainTest.AddInvalidTransactionNonExistentAccount (38 ms)
 [ RUN      ] BlockchainTest.AddMultipleTransactions
 Transaction added: Alice -> Bob: 1 coins
 Transaction added: Alice -> Bob: 1 coins
@@ -58,56 +58,47 @@ Transaction added: Alice -> Bob: 1 coins
 
 Creating new block with 10 transactions...
 Mining block #1...
-Block mined! Nonce: 61306
+Block mined! Nonce: 68544
 Mining took: 1 seconds
-Block hash: 000095a5017f1c6c8384381b7df9501f5c5d00546783ad07c5c45afc5a1f4902
+Block hash: 00006b88e9811a6ca493b806812e724a2fd236694d15641c3e8d77413ef20cc9
 Reward given: Network -> Miner: 50 coins
 
-[       OK ] BlockchainTest.AddMultipleTransactions (1738 ms)
-[----------] 4 tests from BlockchainTest (1920 ms total)
+[       OK ] BlockchainTest.AddMultipleTransactions (1964 ms)
+[----------] 4 tests from BlockchainTest (2081 ms total)
 
 [----------] Global test environment tear-down
-[==========] 4 tests from 1 test suite ran. (1920 ms total)
+[==========] 4 tests from 1 test suite ran. (2081 ms total)
 [  PASSED  ] 4 tests.
 <end of output>
-Test time =   1.98 sec
+Test time =   2.12 sec
 ----------------------------------------------------------
 Test Passed.
-"addTransactionTest" end time: Dec 09 13:40 KST
-"addTransactionTest" time elapsed: 00:00:01
+"addTransactionTest" end time: Dec 09 14:25 KST
+"addTransactionTest" time elapsed: 00:00:02
 ----------------------------------------------------------
 
 3/5 Testing: createAccountTest
 3/5 Test: createAccountTest
 Command: "/mnt/c/github/computer-programming/bitcoin-mining-simulator/build/createAccountTest"
 Directory: /mnt/c/github/computer-programming/bitcoin-mining-simulator/build
-"createAccountTest" start time: Dec 09 13:40 KST
+"createAccountTest" start time: Dec 09 14:25 KST
 Output:
 ----------------------------------------------------------
 [==========] Running 1 test from 1 test suite.
 [----------] Global test environment set-up.
 [----------] 1 test from BlockchainTest
 [ RUN      ] BlockchainTest.CreateAccount
-/mnt/c/github/computer-programming/bitcoin-mining-simulator/tests/test_createAccount.cpp:15: Failure
-Value of: blockchain.createAccount("Alice", 100.0)
-  Actual: true
-Expected: false
-
-[  FAILED  ] BlockchainTest.CreateAccount (80 ms)
-[----------] 1 test from BlockchainTest (80 ms total)
+[       OK ] BlockchainTest.CreateAccount (122 ms)
+[----------] 1 test from BlockchainTest (122 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (80 ms total)
-[  PASSED  ] 0 tests.
-[  FAILED  ] 1 test, listed below:
-[  FAILED  ] BlockchainTest.CreateAccount
-
- 1 FAILED TEST
+[==========] 1 test from 1 test suite ran. (122 ms total)
+[  PASSED  ] 1 test.
 <end of output>
-Test time =   0.09 sec
+Test time =   0.20 sec
 ----------------------------------------------------------
-Test Failed.
-"createAccountTest" end time: Dec 09 13:40 KST
+Test Passed.
+"createAccountTest" end time: Dec 09 14:25 KST
 "createAccountTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -115,24 +106,24 @@ Test Failed.
 4/5 Test: getBalanceTest
 Command: "/mnt/c/github/computer-programming/bitcoin-mining-simulator/build/getBalanceTest"
 Directory: /mnt/c/github/computer-programming/bitcoin-mining-simulator/build
-"getBalanceTest" start time: Dec 09 13:40 KST
+"getBalanceTest" start time: Dec 09 14:25 KST
 Output:
 ----------------------------------------------------------
 [==========] Running 1 test from 1 test suite.
 [----------] Global test environment set-up.
 [----------] 1 test from BlockchainTest
 [ RUN      ] BlockchainTest.GetBalance
-[       OK ] BlockchainTest.GetBalance (78 ms)
-[----------] 1 test from BlockchainTest (78 ms total)
+[       OK ] BlockchainTest.GetBalance (123 ms)
+[----------] 1 test from BlockchainTest (123 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (80 ms total)
+[==========] 1 test from 1 test suite ran. (124 ms total)
 [  PASSED  ] 1 test.
 <end of output>
-Test time =   0.11 sec
+Test time =   0.13 sec
 ----------------------------------------------------------
 Test Passed.
-"getBalanceTest" end time: Dec 09 13:40 KST
+"getBalanceTest" end time: Dec 09 14:25 KST
 "getBalanceTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -140,7 +131,7 @@ Test Passed.
 5/5 Test: addBlockTest
 Command: "/mnt/c/github/computer-programming/bitcoin-mining-simulator/build/addBlockTest"
 Directory: /mnt/c/github/computer-programming/bitcoin-mining-simulator/build
-"addBlockTest" start time: Dec 09 13:40 KST
+"addBlockTest" start time: Dec 09 14:25 KST
 Output:
 ----------------------------------------------------------
 [==========] Running 1 test from 1 test suite.
@@ -151,23 +142,23 @@ Transaction added: Alice -> Bob: 10 coins
 
 Creating new block with 1 transactions...
 Mining block #1...
-Block mined! Nonce: 4154
+Block mined! Nonce: 37434
 Mining took: 0 seconds
-Block hash: 00003cdda95f4cc897fe981a6a18be1e40e0dfcf2d6dfb3d81feded329e81d0f
+Block hash: 00001d6f77dcb8bb91f451ebacefb5d28ae666bfedd78427cae14ada0fe6a39c
 Reward given: Network -> Miner: 50 coins
 
-[       OK ] BlockchainTest.AddBlock (85 ms)
-[----------] 1 test from BlockchainTest (85 ms total)
+[       OK ] BlockchainTest.AddBlock (336 ms)
+[----------] 1 test from BlockchainTest (336 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (85 ms total)
+[==========] 1 test from 1 test suite ran. (336 ms total)
 [  PASSED  ] 1 test.
 <end of output>
-Test time =   0.11 sec
+Test time =   0.36 sec
 ----------------------------------------------------------
 Test Passed.
-"addBlockTest" end time: Dec 09 13:40 KST
+"addBlockTest" end time: Dec 09 14:25 KST
 "addBlockTest" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Dec 09 13:40 KST
+End testing: Dec 09 14:25 KST

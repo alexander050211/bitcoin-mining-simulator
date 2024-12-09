@@ -40,3 +40,4 @@ add_test(NAME getBalanceTest COMMAND getBalanceTest)
 add_executable(addBlockTest tests/test_addBlock.cpp ${SOURCE_FILES})
 target_link_libraries(addBlockTest gtest gtest_main)
 add_test(NAME addBlockTest COMMAND addBlockTest)
+
